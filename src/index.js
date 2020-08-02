@@ -7,10 +7,14 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/Global.css'
 
-const element = <h1>Hello, Felipe!</h1>;
+
+import Badge from "./components/Badge";
+
 
 const container = document.getElementById("app");
 
 // ReactDOM.render(__qué__, __dónde__);
-ReactDOM.render(element, container);
+ReactDOM.render(<Badge />, container);
