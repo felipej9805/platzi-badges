@@ -11,15 +11,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/Global.css'
 
 
-import Badge from "./components/Badge";
+import BadgeNew from "./pages/BadgeNew";
 
 
 const container = document.getElementById("app");
 
 // ReactDOM.render(__qué__, __dónde__);
-ReactDOM.render(<Badge
-    firstName="Felipe"
-    lastName="Jurado"
-    avatarUrl="https://s.gravatar.com/avatar/eef6e63767be8cd49add27c035589294?s=80"
-    jobTitle="Site Reliability Engineer"
-    twitter="felipej9805" />, container);
+ReactDOM.render(<BadgeNew />, container);
