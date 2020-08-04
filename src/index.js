@@ -11,10 +11,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/Global.css'
 
 
-import BadgeNew from "./pages/BadgeNew";
 
 
+import App from './components/App'
 const container = document.getElementById("app");
 
 // ReactDOM.render(__qué__, __dónde__);
-ReactDOM.render(<BadgeNew />, container);
+ReactDOM.render(<App />, container);
