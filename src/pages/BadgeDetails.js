@@ -1,105 +1,89 @@
-import React, { Component } from 'react'
-
-import confLogo from '../images/platziconf-logo.svg'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import './styles/BadgeDetails.css'
+import confLogo from '../images/platziconf-logo.svg'
 
-import PageLoading from '../components/PageLoading'
-import PageError from '../components/PageError'
+
+import DeleteBadgeModal from '../components/DeleteBadgeModal'
 import Badge from '../components/Badge'
 
-import api from '../api'
+function useIncreaseCount(max) {
+    const [count, setCount] = React.useState(0)
 
-import { Link } from 'react-router-dom'
-
-class BadgeDetails extends Component {
-    state = {
-        loading: true,
-        error: null,
-        data: undefined,
+    if (count > max) {
+        setCount(0)
     }
-
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    fetchData = async () => {
-        this.setState({
-            loading: true,
-            error: null
-        })
-
-        try {
-            const data = await api.badges.read(this.props.match.params.badgeId)
-
-            this.setState({
-                loading: false,
-                data: data
-            })
-        } catch (error) {
-            this.setState({
-                loading: false,
-                error: error
-            })
-        }
-    }
+    return [count, setCount]
+}
 
 
+function BadgeDetails(props) {
+    const [count, setCount] = useIncreaseCount(4)
 
-    render() {
+    const badge = props.badge;
 
-        if (this.state.loading) {
-            return <PageLoading />
-        }
 
-        if (this.state.error) {
-            return <PageError error={this.state.error} />
-        }
-
-        const badge = this.state.data;
-        return (
-            <div>
-                <div className="BadgeDetails__hero">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-6">
-                                <img src={confLogo} alt="" />
-                            </div>
-                            <div className="col-6 BadgeDetails__hero-attendant-name">
-                                <h1>{this.state.data.firstName} {this.state.data.lastName}</h1>
-                            </div>
+    return (
+        <div>
+            <div className="BadgeDetails__hero">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-6">
+                            <img src={confLogo} alt="" />
+                        </div>
+                        <div className="col-6 BadgeDetails__hero-attendant-name">
+                            <h1>{badge.firstName} {badge.lastName}</h1>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="container">
-                    <div className="row">
-                        <div className="col">
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <Badge
+                            firstName={badge.firstName}
+                            lastName={badge.lastName}
+                            email={badge.email}
+                            twitter={badge.twitter}
+                            jobTitle={badge.jobTitle}
+                        />
+                    </div>
+                    <div className="col">
+                        <h2>Actions</h2>
+                        <div>
 
-                            <Badge
-                                firstName={badge.firstName}
-                                lastName={badge.lastName}
-                                email={badge.email}
-                                twitter={badge.twitter}
-                                jobTitle={badge.jobTitle}
-                            />
-                        </div>
-                        <div className="col">
-                            <h2>Actions</h2>
                             <div>
-                                <div>
-                                    <Link className="btn btn-primary mb-4" to={`/badges/${badge.id}/edit`}>Edit</Link>
-                                </div>
+                                <button onClick={() => {
+                                    setCount(count + 1)
+                                }} className="btn btn-primary mr-4">
+                                    Increate Count: {count}
+                                </button>
 
-                                <div>
-                                    <button className="btn btn-danger" to={`/badges/${badge.id}/edit`} >Delete</button>
-                                </div>
+
+                                <Link className="btn btn-primary mb-4" to={`/badges/${badge.id}/edit`}>Edit</Link>
+
+                            </div>
+
+
+
+                            <div>
+                                <button onClick={props.onOpenModal} className="btn btn-danger" to={`/badges/${badge.id}/edit`} >Delete</button>
+
+                                <DeleteBadgeModal
+                                    isOpen={props.modalIsOpen}
+                                    onClose={props.onCloseModal}
+                                    onDeleteBadge={props.onDeleteBadge}
+
+                                >Lorem Ipsum</DeleteBadgeModal>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default BadgeDetails
